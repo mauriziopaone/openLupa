@@ -1,0 +1,40 @@
+
+       
+<configuration>
+    <server>ing-clever-master.me.trigrid.it</server>
+    <port>5222</port>
+    <tls>false</tls>
+    <caJks/>
+    <caJksPassword/>
+    <certPkcs12/>
+    <certPkcs12Password/>
+    <username/>
+    <password/>
+    <nickname/>
+    <room>clever@conference.ing-clever-master.me.trigrid.it</room>
+    <roomclients>SHELL@conference.ing-clever-master.me.trigrid.it</roomclients>
+    <librariespath>./libraries</librariespath><!-- 28/11/2011 dalla fusione con il template di host manager -->
+    <activatedCM/>
+    <activatedHM/>
+    <threshold>4</threshold>
+    <notificationsthreshold>200</notificationsthreshold>
+    <replaceAgents/>
+    <agents>
+        <agent>
+            <class>org.clever.HostManager.HyperVisor.HyperVisorAgent</class>
+            <name/>
+        </agent>
+        <agent>
+            <class>org.clever.HostManager.ImageManager.ImageManagerAgent</class>
+            <name/>
+        </agent>
+        <agent>
+            <class>org.clever.HostManager.Monitor.MonitorAgent</class>
+            <name/>
+        </agent>
+        <agent>
+            <class>org.clever.HostManager.NetworkManager.NetworkManagerAgent</class>
+            <name/>
+        </agent>
+    </agents>
+</configuration>

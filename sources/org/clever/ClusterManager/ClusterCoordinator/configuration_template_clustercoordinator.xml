@@ -1,0 +1,36 @@
+
+<configuration>
+    <server>ing-clever-master.me.trigrid.it</server>
+    <port>5222</port>
+    <tls>false</tls>
+    <caJks/>
+    <caJksPassword/>
+    <certPkcs12/>
+    <certPkcs12Password/>
+    <username/>
+    <password/>
+    <nickname/>
+    <room>clever@conference.ing-clever-master.me.trigrid.it</room>
+    <roomclients>SHELL@conference.ing-clever-master.me.trigrid.it</roomclients>
+    <threshold>4</threshold>
+    <activeAgents>false</activeAgents> <!-->Questo tag se settato a true istanzia cmq gli agenti x il CC anche se non è in stato attivo, altrimenti se a false gli agenti verranno istanziati solo se il CM è nello status CM_ACTIVE<-->
+    <replaceAgents>false</replaceAgents>
+    <agents>
+    <agent>
+          <class>org.clever.ClusterManager.StorageManager.StorageManagerAgent</class>
+          <name></name> 
+      </agent>
+      <agent>
+          <class>org.clever.ClusterManager.Test.TestAgent</class>
+          <name></name>
+      </agent>
+      <agent>
+          <class>org.clever.ClusterManager.DatabaseManager.DatabaseManagerAgent</class>
+          <name></name>
+      </agent>
+    </agents>
+    <brain>
+        <class>org.clever.ClusterManager.Brain.SensorBrain</class>
+        <name/>
+    </brain>
+</configuration>

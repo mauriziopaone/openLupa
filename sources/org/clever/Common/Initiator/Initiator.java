@@ -29,28 +29,17 @@ package org.clever.Common.Initiator;
  */
 
 /**** UTILIZZO PATTERN SINGLETON PER SISTEMARE IL CODICE DI QUESTO FILE *******/
-import java.lang.management.ManagementFactory; 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-
-import java.util.Collection;
-import java.util.Iterator;
+import java.io.*;
+import java.lang.management.ManagementFactory;
+import org.apache.log4j.Logger;
 import org.clever.Common.Exceptions.CleverException;
-import org.apache.log4j.*;
-
-import org.clever.ClusterManager.ClusterCoordinator.ClusterCoordinator;
-import org.clever.Common.XMPPCommunicator.ConnectionXMPP; 
-import org.clever.Common.Shared.Support; 
-import org.clever.Common.XMPPCommunicator.ConnectionXMPP.ROOM; 
-
 import org.clever.Common.Shared.LoggerInstantiator;
+import org.clever.Common.Shared.Support;
 import org.clever.Common.XMLTools.FileStreamer;
 import org.clever.Common.XMLTools.ParserXML;
+import org.clever.Common.XMPPCommunicator.ConnectionXMPP;
+import org.clever.Common.XMPPCommunicator.ConnectionXMPP.ROOM;
 import org.clever.HostManager.HostCoordinator.HostCoordinator;
-import org.jivesoftware.smackx.muc.Occupant;
 
 public class Initiator //questa classe deve istanziarsi una sola volta!!
 {    
@@ -237,8 +226,9 @@ public class Initiator //questa classe deve istanziarsi una sola volta!!
          try        	
          {			
             Runtime runtime = Runtime.getRuntime();
-             logger.info("\nPOCO PRIMA DEL LANCIUO DEL CC IN UN PROCESSO SEPARATO!\n");
-             Process ClusterCoordinator = runtime.exec(new String[]{"java", "-cp", cp, "org.clever.ClusterManager.ClusterCoordinator.Main"});        
+            String[] command = new String[]{"java", "-cp", cp, "org.clever.ClusterManager.ClusterCoordinator.Main"};
+             logger.info("ClusterCoordinato launching: "+command);
+             Process ClusterCoordinator = runtime.exec(command);        
                          
              //quì bisognerebbe lanciare lo shutdwnThread di Initiator, passandogli il process Cluster coordinator sopra lanciato!!
             Runnable r = new ShutdownThread_ClusterCoordinator(ClusterCoordinator);
@@ -247,7 +237,8 @@ public class Initiator //questa classe deve istanziarsi una sola volta!!
          }       
          catch (IOException ex) 
         {
-           //logger.error("error launching CLUSTER COORDINATOR: "+ex); //non riesco ad usare il log!
+           logger.info("error launching CLUSTER COORDINATOR: "+ex); //non riesco ad usare il log!
+           ex.printStackTrace();
         }
     }
      
@@ -329,7 +320,7 @@ public class Initiator //questa classe deve istanziarsi una sola volta!!
             }
         
                        
-        this.nick_CM = this.getNick(this.cfgPath_CM); //memorizzo il valore del pid del CM lanciato Mi SA CHE NN VIENE PIÙ USATO!
+        //this.nick_CM = this.getNick(this.cfgPath_CM); //memorizzo il valore del pid del CM lanciato Mi SA CHE NN VIENE PIÙ USATO!
         }
     }
 }

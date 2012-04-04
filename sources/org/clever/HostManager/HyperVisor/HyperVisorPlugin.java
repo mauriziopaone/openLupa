@@ -32,7 +32,8 @@ package org.clever.HostManager.HyperVisor;
 
 import java.util.List;
 import org.clever.Common.Plugins.RunnerPlugin;
-import org.clever.Common.VEInfo.*;
+import org.clever.Common.VEInfo.NetworkSettings;
+import org.clever.Common.VEInfo.VEDescription;
 
 public interface HyperVisorPlugin extends RunnerPlugin {
         

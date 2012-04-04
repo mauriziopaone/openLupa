@@ -23,16 +23,10 @@
  */
 package org.clever.HostManager.Test;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import java.util.logging.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+
 import org.clever.Common.Communicator.Agent;
 import org.clever.Common.Communicator.Notification;
 import org.clever.Common.Exceptions.CleverException;
-import org.clever.Common.Shared.LoggerInstantiator;
 
 /**
  *
@@ -52,7 +46,7 @@ public class TestAgent extends Agent implements Runnable {
 
     public TestAgent() throws CleverException
     {        
-         logger = Logger.getLogger( "TestAgentHm" );
+        
          logger.info("\n\nPROVA TEST AGENT HM\n");         
          
     }
@@ -63,14 +57,14 @@ public class TestAgent extends Agent implements Runnable {
         if(super.getAgentName().equals("NoName"))
         {
             
-            super.setAgentName("TestAgentHM");
+            super.setAgentName("TestAgent");
         }
         try {
             
             super.start();
            
         } catch (CleverException ex) {
-            java.util.logging.Logger.getLogger(TestAgent.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error(ex);
         }
     }
     
@@ -80,6 +74,10 @@ public class TestAgent extends Agent implements Runnable {
         
         new Thread(this).start();
     }
+    
+    
+    
+    
     @Override
     public Class getPluginClass() {
         return this.getClass();

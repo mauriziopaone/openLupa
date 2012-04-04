@@ -60,7 +60,7 @@ public class CommunicatorDbus implements CommunicationPlugin, CleverDbusInterfac
             logger.info("Initializing the Dbus Communication plugin ");
 
             connection = DBusConnection.getConnection(DBusConnection.SESSION);
-            logger.debug("Creating the connection to the SessionBus ");
+            logger.info("Creating the connection to the SessionBus ");
 
             
             
@@ -76,6 +76,7 @@ public class CommunicatorDbus implements CommunicationPlugin, CleverDbusInterfac
             String ex_msg="Error while creating the Object on Dbus.\n " +
                     "Object "+objectPath+".\n" +
                     "Check if this object allready exists.";
+            ex.printStackTrace();
             logger.error(ex_msg, ex);
         }
     }

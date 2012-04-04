@@ -133,12 +133,12 @@ public class HvlibVirt implements HyperVisorPlugin , VirConnectDomainEventGeneri
                  
                     
       this.conn = new Connect( con, false );
-      int res=99;
+     /* int res=99;
      if((res = Libvirt.INSTANCE.virEventRegisterDefaultImpl()) == -1)
           logger.error("Error on register event loop");
       logger.debug("virEventRegisterDefaultImpl restituisce: "+res);
       new Thread(new pollEventThread(logger),"Pollthread").start();
-      
+      */
       logger.info( "LibVirt plugin initialized: " + "connected to qemu:///system" );
       updateMap();
     }
@@ -457,7 +457,7 @@ public class HvlibVirt implements HyperVisorPlugin , VirConnectDomainEventGeneri
     catch( LibvirtException ex )
     {
       logger.error( "Error: " + ex );
-      throw new HyperVisorException("Uknown error :" + ex.getMessage());
+      throw new HyperVisorException("Unknown error :" + ex.getMessage());
     }
   }
 

@@ -457,7 +457,7 @@ public class ConnectionXMPP implements javax.security.auth.callback.CallbackHand
    */
   public void inBandRegistration( final String username, final String password )
   {
-    if( ( !connection.isConnected() ) || connection == null )
+    if( ( connection == null || !connection.isConnected() )  )
     {
       logger.debug( "Not connected" );
       System.exit( 1 );

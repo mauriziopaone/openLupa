@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import org.clever.Common.Communicator.MethodInvoker;
 import org.clever.Common.Communicator.ModuleCommunicator;
@@ -86,7 +87,7 @@ public class HostCoordinator implements CleverMessageHandler {
         this.timeReload = 0;
     }
 
-    public void init() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+    public void init()  {
         try {
             logger.debug("CLASSPATH= " + System.getProperty("java.class.path", null));
             inxml = new FileInputStream(cfgPath);
@@ -101,9 +102,22 @@ public class HostCoordinator implements CleverMessageHandler {
         //such path is read from the configuration file of the initiator within the node <librariespath>
         System.setProperty("java.library.path", pXML.getElementContent("librariespath") + ":" + System.getProperty("java.library.path"));
 
-        Field fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
+        Field fieldSysPath = null;
+        try {
+            fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
+        } catch (NoSuchFieldException ex) {
+           logger.error(ex);
+        } catch (SecurityException ex) {
+            logger.error(ex);
+        }
         fieldSysPath.setAccessible(true);
-        fieldSysPath.set(null, null);
+        try {
+            fieldSysPath.set(null, null);
+        } catch (IllegalArgumentException ex) {
+            logger.error(ex);
+        } catch (IllegalAccessException ex) {
+            logger.error(ex);
+        }
 
 
 
@@ -210,11 +224,8 @@ public class HostCoordinator implements CleverMessageHandler {
     }
 
     public void start() throws CleverException {
-        try {
-            this.init();
-        } catch (Exception ex) {
-            throw new CleverException(ex, "Error on init method: library.path setting error?");
-        }
+                   this.init();
+       
         this.changeStatus();
         this.launchAgents();
     }

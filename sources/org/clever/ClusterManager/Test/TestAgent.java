@@ -46,14 +46,14 @@ public class TestAgent extends CmAgent implements Runnable
     
     public TestAgent() throws CleverException, IOException
     {
-        logger = Logger.getLogger("TestAgentCm");
+        logger = Logger.getLogger("TestAgent");
     }
     
     @Override
     public void initialization() throws CleverException
     {
         if(super.getAgentName().equals("NoName"))
-            super.setAgentName("TestAgentCM");
+            super.setAgentName("TestAgent");
         
         super.start();        
     }
@@ -83,7 +83,13 @@ public class TestAgent extends CmAgent implements Runnable
         return description;
     }
 
-
+    /**
+     * Invokes a method (specified by method param) of a particular agent, in the same CM (specified by localAgent)
+     * @param localAgent
+     * @param method
+     * @return
+     * @throws CleverException 
+     */
     public Object localInvoke(String localAgent,String method) throws CleverException
     {
         return this.invoke(localAgent, method, true, null);

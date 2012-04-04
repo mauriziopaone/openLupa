@@ -294,8 +294,8 @@ public abstract class Agent implements MethodInvokerHandler {
         }
 
         //Thread for the shutdown
-        Thread hook = new Thread(r); //va bene così??
-        Runtime.getRuntime().addShutdownHook(hook); //va bene così??
+        Thread hook = new Thread(r); 
+        Runtime.getRuntime().addShutdownHook(hook); 
 
 
         while (true) {

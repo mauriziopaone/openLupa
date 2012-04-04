@@ -32,7 +32,6 @@ package org.clever.HostManager.HyperVisor;
 
 import java.io.IOException;
 import java.io.InputStream;
-import org.apache.log4j.Logger;
 import org.clever.Common.Communicator.Agent;
 import org.clever.Common.Exceptions.CleverException;
 import org.clever.Common.XMLTools.FileStreamer;
@@ -43,8 +42,8 @@ public class HyperVisorAgent extends Agent {
     private HyperVisorPlugin hypervisor;
     private Class cl;
 
-    public HyperVisorAgent() throws IOException, CleverException {
-        logger = Logger.getLogger("HyperVisor");
+    public HyperVisorAgent()  {
+        super();
     }
 
     @Override
@@ -62,7 +61,7 @@ public class HyperVisorAgent extends Agent {
             ParserXML pXML = new ParserXML(fs.xmlToString(inxml));
             cl = Class.forName(pXML.getElementContent("HyperVisor"));
             hypervisor = (HyperVisorPlugin) cl.newInstance();
-            hypervisor.init(pXML.getRootElement().getChild("pluginParams"), this); //SI BLOCCA QUA!!
+            hypervisor.init(pXML.getRootElement().getChild("pluginParams"), this); 
             logger.debug("called init of " + pXML.getElementContent("HyperVisor"));
 
             // agentName=pXML.getElementContent( "moduleName" );          

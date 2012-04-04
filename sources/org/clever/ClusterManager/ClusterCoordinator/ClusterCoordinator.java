@@ -56,7 +56,6 @@ import org.clever.ClusterManager.Dispatcher.DispatcherAgent;
 import org.clever.ClusterManager.Dispatcher.DispatcherPlugin;
 import org.clever.ClusterManager.Info.InfoAgent;
 import org.clever.ClusterManager.Brain.BrainInterface;
-import org.clever.Common.Communicator.ModuleCommunicator;
 import org.clever.Common.Communicator.Notification;
 import org.clever.Common.Initiator.ElectionThread;
 import org.clever.Common.Initiator.Listener;
@@ -140,7 +139,7 @@ public class ClusterCoordinator implements CleverMessageHandler
       tls = false; //non viene attualmente usata la connessione su tls
   }
   
-  public void init() throws CleverException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException
+  public void init() 
   {
       cfgFile = new File( cfgPath );
       
@@ -171,13 +170,26 @@ public class ClusterCoordinator implements CleverMessageHandler
       {
           FileStreamer fs = new FileStreamer();
           pXML = new ParserXML( fs.xmlToString( inxml ) );
-          
+          logger.debug("Setting java.library.path ...");
           //adding to the java.library.path the path containing CLEVER specific dynamic libraries
           //such path is read from the configuration file of the initiator within the node <librariespath>
           System.setProperty( "java.library.path", pXML.getElementContent( "librariespath" ) + ":" + System.getProperty( "java.library.path" ));
-          Field fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
+          Field fieldSysPath = null;
+            try {
+                fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
+            } catch (NoSuchFieldException ex) {
+                logger.error("Error setting java.library.path: "+ex);
+            } catch (SecurityException ex) {
+                logger.error("Error setting java.library.path: "+ex);
+            }
           fieldSysPath.setAccessible(true);
-          fieldSysPath.set(null, null);
+            try {
+                fieldSysPath.set(null, null);
+            } catch (IllegalArgumentException ex) {
+                logger.error("Error setting java.library.path: "+ex);
+            } catch (IllegalAccessException ex) {
+                logger.error("Error setting java.library.path: "+ex);
+            }
           System.setProperty( "java.library.path", System.getProperty( "java.library.path" ) + ":" + pXML.getElementContent( "librariespath" ) );
           logger.debug( System.getProperty( "java.library.path" ) );
       }
@@ -186,6 +198,9 @@ public class ClusterCoordinator implements CleverMessageHandler
           logger.error( "Error while parsing: " + ex );
       }
       
+      
+      try
+       {  
       server = pXML.getElementContent( "server" );
       room = pXML.getElementContent( "room" );
       roomclients = pXML.getElementContent( "roomclients" );
@@ -197,7 +212,13 @@ public class ClusterCoordinator implements CleverMessageHandler
       this.replaceAgents = Boolean.parseBoolean(pXML.getElementContent("replaceAgents"));
       this.numReload = Integer.parseInt(pXML.getElementContent("numReloadAgent"));
       this.timeReload = Integer.parseInt(pXML.getElementContent("timeReloadAgent"));
-      
+       }
+      catch (Exception e)
+          { 
+              logger.error("Error parsing configuration: "+e);
+              System.exit(1);
+              
+          }
       logger.info("\n\n&&&&& i nuovi valori caricati sono: " +numReload  +" "+timeReload);     
       logger.info("\n\nREPLACEAGENTS NEL CC: "+replaceAgents);
       tls = Boolean.parseBoolean( pXML.getElementContent( "tls" ) );  
@@ -206,9 +227,22 @@ public class ClusterCoordinator implements CleverMessageHandler
       //adding to the java.library.path the path containing CLEVER specific dynamic libraries
       //such path is read from the configuration file of the initiator within the node <librariespath>
       System.setProperty( "java.library.path", pXML.getElementContent( "librariespath" ) + ":" + System.getProperty( "java.library.path" ));
-      Field fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
+      Field fieldSysPath = null;
+        try {
+            fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
+        } catch (NoSuchFieldException ex) {
+            java.util.logging.Logger.getLogger(ClusterCoordinator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            java.util.logging.Logger.getLogger(ClusterCoordinator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
       fieldSysPath.setAccessible(true);
-      fieldSysPath.set(null, null);
+        try {
+            fieldSysPath.set(null, null);
+        } catch (IllegalArgumentException ex) {
+            java.util.logging.Logger.getLogger(ClusterCoordinator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(ClusterCoordinator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
       System.setProperty( "java.library.path", System.getProperty( "java.library.path" ) + ":" + pXML.getElementContent( "librariespath" ) );
       logger.debug( System.getProperty( "java.library.path" ) );
   }
@@ -428,19 +462,17 @@ public class ClusterCoordinator implements CleverMessageHandler
    * 
    * @throws CleverException 
    */
-  public void start() throws CleverException     
+  public void start() throws CleverException
   {
       logger.info("\nSTART DI CC\n");
-      try 
-      {
-          this.init();
-      }
-      catch (Exception ex) 
-      {
-          throw new CleverException(ex,"Error on init method: library.path setting error?");
-      }
       
-      this.connectionManagement(ROOM.CLEVER_MAIN, this);
+          this.init();
+        try {
+            this.connectionManagement(ROOM.CLEVER_MAIN, this);
+        } catch (CleverException ex) {
+            logger.error("Errore in start: "+ex);
+            throw ex;
+        }
       this.tryActiveCC(conn, this);
       
       logger.info("Starting procedure launching Agents for CM");    
@@ -450,7 +482,12 @@ public class ClusterCoordinator implements CleverMessageHandler
       if(this.activeAgents) 
       {
           logger.info("This CM is FORCED to launch his Agents");
-          this.launchAgents(conn); //lancio cmq gli agenti anche per i CM non attivi       
+            try {
+                this.launchAgents(conn); //lancio cmq gli agenti anche per i CM non attivi
+            } catch (CleverException ex) {
+                logger.error("Errore in start: "+ex);
+                throw ex;
+            }
       }
   }
     

@@ -186,7 +186,7 @@ public class Initiator //questa classe deve istanziarsi una sola volta!!
                
          if( username.isEmpty() || password.isEmpty() )               
          {   
-             username = nickname = "OBSERVER_" + conn.getHostName(); //genero il nickname e la username con il quale l'initiator si collega al server XMPP                   
+             username = nickname = conn.getHostName(); //genero il nickname e la username con il quale l'initiator si collega al server XMPP                   
              password = Support.generatePassword( 7 );                   
              conn.inBandRegistration( username, password ); //questa funzione crea un account sul server XMPP, ovviamente tale account va creato una sola volta!                   
                    

@@ -45,10 +45,8 @@ public class Main {
     
     static HyperVisorAgent hvp;
     public static void main(String args[]) throws IOException {
-        try {
+       
             hvp = new HyperVisorAgent();
-        } catch (CleverException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
     }
 }

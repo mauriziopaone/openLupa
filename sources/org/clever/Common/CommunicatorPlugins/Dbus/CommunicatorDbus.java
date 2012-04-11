@@ -58,7 +58,7 @@ public class CommunicatorDbus implements CommunicationPlugin, CleverDbusInterfac
 
             logger = Logger.getLogger("DbusCommunicationPlugin");
             logger.info("Initializing the Dbus Communication plugin ");
-
+ 
             connection = DBusConnection.getConnection(DBusConnection.SESSION);
             logger.info("Creating the connection to the SessionBus ");
 

@@ -1,29 +1,34 @@
-
-       
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <server>ing-clever-master.me.trigrid.it</server>
-    <port>5222</port>
-    <tls>false</tls>
-    <caJks/>
-    <caJksPassword/>
-    <certPkcs12/>
-    <certPkcs12Password/>
-    <username/>
-    <password/>
-    <nickname/>
-    <room>clever@conference.ing-clever-master.me.trigrid.it</room>
-    <roomclients>SHELL@conference.ing-clever-master.me.trigrid.it</roomclients>
-    <librariespath>./libraries</librariespath><!-- 28/11/2011 dalla fusione con il template di host manager -->
-    <activatedCM/>
-    <activatedHM/>
-    <threshold>4</threshold>
+  <server>ing-clever-master.me.trigrid.it</server>
+  <port>5222</port>
+  <tls>false</tls>
+  <caJks />
+  <caJksPassword />
+  <certPkcs12 />
+  <certPkcs12Password />
+  <username></username>
+  <password></password>
+  <nickname></nickname>
+ 
+  <room>vision@conference.ing-clever-master.me.trigrid.it</room>
+   <threshold>1</threshold> <!-- la threshold effettivamnte usata x istanziare i CC è questa!! -->
+    <activatedCM>true</activatedCM><!--> questo flag specifica se l'initiator può istanziare Cluster manager <-->
+    <activatedHM>true</activatedHM><!--questo flag specifica se l'initiator può istanziare Host manager -->
+    <replaceAgents>true</replaceAgents>
+    <librariespath>./libraries</librariespath>
     <notificationsthreshold>200</notificationsthreshold>
-    <replaceAgents/>
-    <agents>
-        <agent>
-            <class>org.clever.HostManager.HyperVisor.HyperVisorAgent</class>
-            <name/>
-        </agent>
+    
+    <numReloadAgent>4</numReloadAgent> <!--imposto il numero di lanci max consentiti per un agente-->
+    <timeReloadAgent>10</timeReloadAgent> <!-- imposto il max tempo x il rilancio di un agente -->
+  <agents>
+ 
+  <agent>
+      <class>org.clever.HostManager.HyperVisor.HyperVisorAgent</class>
+      <name>HyperVisorAgent</name>
+    </agent>
+ 
+    <!--
         <agent>
             <class>org.clever.HostManager.ImageManager.ImageManagerAgent</class>
             <name/>
@@ -36,5 +41,7 @@
             <class>org.clever.HostManager.NetworkManager.NetworkManagerAgent</class>
             <name/>
         </agent>
-    </agents>
+        -->
+  </agents>
 </configuration>
+
